@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/.env" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Classes/Instagram/Handler.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Classes/Instagram/libs/CacheHandler.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Classes/Instagram/libs/Connect.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Classes/Instagram/libs/Helper.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Classes/Instagram/libs/Requests.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Classes/Shopify.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Http/Controllers/APIController.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Http/Controllers/GPDRController.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Http/Controllers/InstagramControllers/InstagramController.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Http/Controllers/ShopifyControllers/HomeController.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Jobs/AfterAuthenticateJob.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Jobs/AppUninstalledJob.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Models/InstagramModel.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Models/ProductsModel.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Models/ShopifyModel.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Models/User.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Models/UserModel.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Providers/AppServiceProvider.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/composer.json" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/config/app.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/config/shopify-app.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/migrations/2020_01_29_010501_create_plans_table.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/seeders/PlansSeeder.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/public/js/app.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/public/js/instagram-script.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/public/views/sections/instagram-shopify-slider.liquid" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/resources/js/app.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/resources/views/home.blade.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/resources/views/vendor/shopify-app/include/nav.blade.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/resources/views/vendor/shopify-app/layouts/default.blade.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/routes/api.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/routes/web.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/storage/app/instagram-shopify-slider.liquid" charset="UTF-8" />
+  </component>
+</project>

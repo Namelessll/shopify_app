@@ -1,0 +1,750 @@
+<style>
+    .insta-feed__wrapper * {
+        box-sizing: border-box;
+    }
+
+    .insta-feed__wrapper {
+        display: flex;
+        justify-content: center;
+    }
+
+    .insta-feed__size-container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    max-width: {{section.settings.insta_section_width}}%;
+    }
+
+    .insta-feed {
+        display: grid;
+    grid-gap: {{section.settings.insta_section_gap}}px;
+    grid-template-columns: repeat(auto-fill, minmax({{section.settings.insta_section_card_size}}px, 1fr));
+    overflow: hidden;
+    width: 100%;
+    }
+
+    .insta-feed__block {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        padding-bottom: 100%;
+    }
+
+    .insta-feed__image-contaner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        cursor: pointer;
+    }
+
+    .insta-feed__image-contaner > img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .insta-feed__shop-btn-wrapper {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .insta-feed__shop-btn {
+        display: block;
+        margin: 40px 0;
+        padding: 20px 50px;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 24px;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: #FFFFFF;
+        background-color: #1A1A1A;
+    }
+</style>
+
+<style>
+    .insta-feed-detail * {
+        box-sizing: border-box;
+    }
+
+    .insta-feed-detail__overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        /*display: none;*/
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .insta-feed-detail {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 99;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .insta-feed-detail__container {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        width: 1270px;
+        height: 700px;
+        background-color: #ffffff;
+    }
+
+    .detail-container__header {
+        display: flex;
+        width: 100%;
+        height: 56px;
+        overflow: hidden;
+    }
+
+    .detail-container__header-link {
+        display: flex;
+        align-items: center;
+        height: 56px;
+        padding: 0 20px;
+        flex-grow: 1;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 24px;
+        color: #212B36;
+    }
+
+    .detail-container__header-link-icon {
+        width: 40px;
+        height: 40px;
+        margin-right: 15px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #007ACE;
+    }
+
+    .detail-container__close {
+        position: relative;
+        width: 56px;
+        height: 56px;
+        flex-shrink: 0;
+        cursor: pointer;
+    }
+
+    .detail-container__close::before,
+    .detail-container__close::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: calc(50% - 10px);
+        display: block;
+        width: 20px;
+        height: 2px;
+        background-color: #212B36;
+    }
+
+    .detail-container__close::before {
+        transform: rotate(45deg);
+    }
+
+    .detail-container__close::after {
+        transform: rotate(-45deg);
+    }
+
+    .insta-feed-detail__image-sizer {
+        width: 700px;
+        flex-shrink: 0;
+    }
+
+    .detail-container__image-container {
+        position: relative;
+        width: 100%;
+        padding-bottom: 100%;
+    }
+
+    .insta-feed-detail__image-dot-circle {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+    }
+
+    .insta-feed-detail__image-dot-circle::before,
+    .insta-feed-detail__image-dot-circle::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #ffffff;
+        border-radius: 50%;
+    }
+
+    .insta-feed-detail__image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .insta-feed-detail__image-dot {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100%;
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .insta-feed-detail__btn {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 80px;
+        cursor: pointer;
+    }
+
+    .insta-feed-detail__btn-text {
+        display: none;
+        font-size: 14px;
+        line-height: 20px;
+        color: #B2B2B2;
+    }
+
+    .detail-container__overflow-container {
+        height: calc(100% - 56px);
+        padding: 20px;
+        overflow: auto;
+    }
+
+    .detail-container__text-container {
+        max-height: 72px;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 24px;
+        overflow: hidden;
+    }
+
+    .detail-container__read-more {
+        display: none;
+        margin-top: 5px;
+        font-size: 14px;
+        line-height: 20px;
+        text-decoration-line: underline;
+        cursor: pointer;
+    }
+
+    .insta-feed-detail__btn::before {
+        content: '';
+        position: absolute;
+        right: 50%;
+        top: calc(50% - 13px);
+        display: block;
+        width: 20px;
+        height: 20px;
+        border-bottom: 3px solid #ffffff;
+        border-left: 3px solid #ffffff;
+        transform: rotate(45deg);
+        transition: all 0.2s ease;
+    }
+
+    .insta-feed-detail__btn:hover::before {
+        right: calc(50% - 20px);
+    }
+
+    .insta-feed-detail__btn_prev {
+        left: -80px;
+    }
+
+    .insta-feed-detail__btn_next {
+        right: -80px;
+        transform: rotate(-180deg);
+    }
+
+    .insta-feed-detail__content-container {
+        width: calc(100% - 700px);
+    }
+
+    .detail-container__products-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .detail-container__product {
+        width: calc(100% / 3);
+        padding: 10px;
+    }
+
+    .insta-product {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .insta-product__image-container {
+        position: relative;
+        width: 100%;
+        padding-bottom: 100%;
+        overflow: hidden;
+    }
+
+    .insta-product__image-content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .insta-product__image-wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .insta-product__title {
+        margin-top: 10px;
+    }
+
+    .insta-product__image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .insta-product__title {
+        max-width: 100%;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .insta-product__price {
+        max-width: 100%;
+        margin: 10px 0;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 20px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .insta-product__btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 40px;
+        font-weight: bold;
+        text-transform: uppercase;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-size: 14px;
+        line-height: 24px;
+        color: #ffffff;
+        background-color: #1A1A1A;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .insta-product__btn:hover {
+        opacity: 0.7;
+    }
+
+    @media (max-width: 1430px) {
+        .insta-feed-detail__container {
+            width: calc(100% - 120px);
+        }
+
+        .insta-feed-detail__btn {
+            width: 60px;
+        }
+
+        .insta-feed-detail__btn_prev {
+            left: -60px;
+        }
+
+        .insta-feed-detail__btn_next {
+            right: -60px;
+        }
+
+        .insta-feed-detail__btn::before {
+            right: 10px;
+        }
+    }
+
+    @media (max-width: 1280px) {
+        .insta-feed-detail__container {
+            height: 590px;
+        }
+
+        .insta-feed-detail__content-container {
+            width: calc(100% - 590px);
+        }
+
+        .insta-feed-detail__image-sizer {
+            width: 590px;
+        }
+    }
+
+    @media (max-width: 1190px) {
+        .detail-container__product {
+            width: 50%;
+        }
+    }
+
+    @media (max-width: 1024px) {
+        .insta-feed-detail__container {
+            height: 580px;
+        }
+
+        .insta-feed-detail__content-container {
+            width: calc(100% - 580px);
+        }
+
+        .insta-feed-detail__image-sizer {
+            width: 580px;
+        }
+
+        .insta-product__btn {
+            height: 30px;
+            font-size: 12px;
+            line-height: 20px;
+        }
+    }
+
+    @media (max-width: 1020px) {
+        .insta-feed-detail__container {
+            flex-direction: column;
+            height: auto;
+            max-height: calc(100% - 40px);
+            padding-top: 56px;
+            overflow: auto;
+        }
+
+        .insta-feed-detail__image-sizer {
+            width: 100%;
+        }
+
+        .insta-feed-detail__content-container {
+            width: 100%;
+        }
+
+        .detail-container__product {
+            width: calc(100% / 3);
+        }
+
+        .detail-container__header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .insta-feed-detail__btn {
+            position: static;
+            display: flex;
+            align-items: center;
+            width: 50%;
+            padding: 20px;
+        }
+
+        .insta-feed-detail__buttons {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .insta-feed-detail__btn-text {
+            display: block;
+        }
+
+        .insta-feed-detail__btn::before {
+            position: static;
+            flex-shrink: 0;
+            width: 11px;
+            height: 11px;
+            border-color: #B2B2B2;
+        }
+
+        .insta-feed-detail__btn_next .insta-feed-detail__btn-text {
+            margin-left: 10px;
+            transform: rotate(180deg);
+        }
+
+        .insta-feed-detail__btn_prev .insta-feed-detail__btn-text {
+            margin-left: 10px;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .insta-feed-detail__container {
+            width: calc(100% - 20px);
+        }
+
+        .insta-feed {
+            grid-gap: 15px;
+        }
+    }
+
+    @media (max-width: 500px) {
+        .detail-container__product {
+            width: 50%;
+        }
+
+        .insta-feed {
+            grid-template-columns: repeat(auto-fill, minmax(calc(100% - 20px), 1fr));
+        }
+    }
+</style>
+
+<div class="insta-feed__wrapper" data-posts-count="{{section.settings.insta_section_post_count}}">
+    <div class="insta-feed__size-container">
+        <div class="insta-feed">
+
+            {% for i in (1..section.settings.insta_section_post_count) %}
+            <div class="insta-feed__block" onclick="showInstaDetail(this)">
+                <div class="insta-feed__image-contaner">
+                    <img src="#">
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+{% if section.settings.insta_section_shop_button %}
+<div class="insta-feed__shop-btn-wrapper">
+    <a href="{{section.settings.insta_section_shop_button_link}}" class="insta-feed__shop-btn">Shop our Instagram</a>
+</div>
+{% endif %}
+
+<div class="insta-feed-detail">
+    <div class="insta-feed-detail__overlay" onclick="closeInstaDetai()"></div>
+    <div class="insta-feed-detail__container">
+        <div class="insta-feed-detail__image-sizer">
+            <div class="detail-container__image-container">
+                <div class="insta-product__image-content">
+                    <img class="insta-feed-detail__image" src="2.png">
+
+                </div>
+            </div>
+        </div>
+        <div class="insta-feed-detail__buttons">
+            <div class="insta-feed-detail__btn insta-feed-detail__btn_prev" onclick="prevPost(document.querySelector('.insta-feed-detail').getAttribute('data-post-active')+1);">
+                <span class="insta-feed-detail__btn-text">Previous</span>
+            </div>
+            <div class="insta-feed-detail__btn insta-feed-detail__btn_next">
+                <span class="insta-feed-detail__btn-text">Next</span>
+            </div>
+        </div>
+        <div class="insta-feed-detail__content-container detail-container">
+            <div class="detail-container__header">
+                <div class="detail-container__header-link"><span
+                    class="detail-container__header-link-icon"></span><span class="detail-insta-username">asdaddd</span></div>
+                <div class="detail-container__close" onclick="closeInstaDetai()"></div>
+            </div>
+            <div class="detail-container__overflow-container">
+                <div class="detail-container__text-container">
+                    <div class="detail-container__text-content">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                        Inventore natus neque omnis optio perspiciatis, quos velit. Distinctio optio quae reprehenderit
+                        sequi? Aspernatur, culpa itaque mollitia natus quisquam quo quod. Architecto cumque dolore enim
+                        facilis mollitia nisi, odit ratione? A accusamus enim explicabo fugit impedit itaque nisi
+                        obcaecati
+                        odio officia suscipit!
+                    </div>
+                </div>
+                <div class="detail-container__read-more">
+                    Read more
+                </div>
+                <div class="detail-container__products-wrapper">
+                    <!--
+                      <div class="detail-container__product insta-product">
+                          <div class="insta-product__image-container">
+                              <div class="insta-product__image-wrapper">
+                                  <img class="insta-product__image" src="image_product.png" alt="">
+                              </div>
+                          </div>
+                          <div class="insta-product__title">Lorem ipsum dolor sit.</div>
+                          <div class="insta-product__price">75$</div>
+                          <a class="insta-product__btn">shop now</a>
+                      </div>
+                    -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const clearBoard = document.querySelector('.insta-product__image-content').innerHTML;
+
+    function showInstaDetail(item) {
+        const instaDetailBlock = document.querySelector('.insta-feed-detail');
+        instaDetailBlock.style.display = 'flex';
+        document.querySelector('.insta-feed-detail').setAttribute('data-post-active', item.getAttribute('data-post-id'));
+        document.querySelector('.detail-container__products-wrapper').innerHTML = "";
+        document.querySelector('.insta-product__image-content').innerHTML = clearBoard;
+        document.querySelector('.insta-feed-detail__image').src = window.instaResponse[item.getAttribute('data-post-id')]['post_media_url'];
+        document.querySelector('.detail-insta-username').innerHTML = "@" + window.instaResponse[item.getAttribute('data-post-id')]['post_username'];
+        document.querySelector('.detail-container__text-content').innerHTML = window.instaResponse[item.getAttribute('data-post-id')]['post_caption'];
+
+        if (window.instaResponse[item.getAttribute('data-post-id')]['dots']) {
+            for(var i = 0; i < window.instaResponse[item.getAttribute('data-post-id')]['dots'].length; i++) {
+                console.log(window.instaResponse[item.getAttribute('data-post-id')]['dots']);
+                document.querySelector('.detail-container__products-wrapper').innerHTML += "<div class='detail-container__product insta-product'><div class='insta-product__image-container'><div class='insta-product__image-wrapper'><img class='insta-product__image' src='"+window.instaResponse[item.getAttribute('data-post-id')]['dots'][i]["product_image"]+"' alt=''></div></div><div class='insta-product__title'>"+window.instaResponse[item.getAttribute('data-post-id')]['dots'][i]["product_name"]+"</div><div class='insta-product__price'>From "+window.instaResponse[item.getAttribute('data-post-id')]['dots'][i]["product_price"]+" "+window.Shopify.currency.active+"</div><a class='insta-product__btn' href='/products/" +window.instaResponse[item.getAttribute('data-post-id')]['dots'][i]["product_handle"]+"'>shop now</a></div></div>";
+                document.querySelector('.insta-product__image-content').innerHTML += '<div class="insta-feed-detail__image-dot" style="top: '+window.instaResponse[item.getAttribute('data-post-id')]['dots'][i]['serialized_coords']['top']+'%; left: '+window.instaResponse[item.getAttribute('data-post-id')]['dots'][i]['serialized_coords']['left']+'%;"><div class="insta-feed-detail__image-dot-circle"></div></div>'
+            }
+        }
+        toggleShowMoreBtn();
+        document.body.style.overflow = 'hidden';
+    }
+
+    function prevPost(prev) {
+        if (prev > 0) {
+            document.querySelector('.insta-feed-detail').setAttribute('data-post-active', prev);
+            document.querySelector('.detail-container__products-wrapper').innerHTML = "";
+            document.querySelector('.insta-product__image-content').innerHTML = clearBoard;
+            document.querySelector('.insta-feed-detail__image').src = window.instaResponse[prev]['post_media_url'];
+            document.querySelector('.detail-insta-username').innerHTML = "@" + window.instaResponse[prev]['post_username'];
+            document.querySelector('.detail-container__text-content').innerHTML = window.instaResponse[prev]['post_caption'];
+
+            if (window.instaResponse[prev]['dots']) {
+                for(var i = 0; i < window.instaResponse[prev]['dots'].length; i++) {
+                    document.querySelector('.detail-container__products-wrapper').innerHTML += "<div class='detail-container__product insta-product'><div class='insta-product__image-container'><div class='insta-product__image-wrapper'><img class='insta-product__image' src='"+window.instaResponse[prev]['dots'][i]["product_image"]+"' alt=''></div></div><div class='insta-product__title'>"+window.instaResponse[prev]['dots'][i]["product_name"]+"</div><div class='insta-product__price'>From "+window.instaResponse[prev]['dots'][i]["product_price"]+" "+window.Shopify.currency.active+"</div><a class='insta-product__btn' href='/products/" +window.instaResponse[prev]['dots'][i]["product_handle"]+"'>shop now</a></div></div>";
+                    document.querySelector('.insta-product__image-content').innerHTML += '<div class="insta-feed-detail__image-dot" style="top: '+window.instaResponse[item.getAttribute('data-post-id')]['dots'][i]['serialized_coords']['top']+'%; left: '+window.instaResponse[prev]['dots'][i]['serialized_coords']['left']+'%;"><div class="insta-feed-detail__image-dot-circle"></div></div>'
+                }
+            } else {
+                document.querySelector('.insta-feed-detail__btn_prev').style.display = 'none';
+            }
+        }
+    }
+
+    function closeInstaDetai() {
+        const instaDetailBlock = document.querySelector('.insta-feed-detail');
+        instaDetailBlock.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    function toggleShowMoreBtn() {
+        const container = document.querySelector('.detail-container__text-container');
+        const text = document.querySelector('.detail-container__text-content');
+        const btn = document.querySelector('.detail-container__read-more');
+
+        btn.style.display = container.clientHeight < text.clientHeight
+            ? 'block' : 'none';
+    }
+
+    function showDetailDescriptionText() {
+        const container = document.querySelector('.detail-container__text-container');
+        const btn = document.querySelector('.detail-container__read-more');
+
+        container.style.maxHeight = 'none';
+        btn.style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const btn = document.querySelector('.detail-container__read-more');
+
+        btn.addEventListener('click', () => {
+            showDetailDescriptionText();
+        })
+    });
+
+    document.addEventListener('resize', () => {
+        toggleShowMoreBtn();
+    })
+</script>
+
+{% stylesheet %}
+
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
+
+{% schema %}
+{
+"name": "Insta-App",
+"settings": [
+{
+"type": "range",
+"id": "insta_section_width",
+"min": 0,
+"max": 100,
+"step": 5,
+"unit": "%",
+"label": "Content-width",
+"default": 100
+},
+{
+"type": "range",
+"id": "insta_section_gap",
+"min": 0,
+"max": 30,
+"step": 1,
+"unit": "px",
+"label": "Indent between cards",
+"default": 30
+},
+{
+"type": "range",
+"id": "insta_section_card_size",
+"min": 150,
+"max": 400,
+"step": 5,
+"unit": "px",
+"label": "Cards size",
+"default": 400
+},
+{
+"type": "checkbox",
+"id": "insta_section_shop_button",
+"label": "Display shop button",
+"default": true
+},
+{
+"id": "insta_section_shop_button_link",
+"type": "url",
+"label": "Button link"
+},
+{
+"id": "insta_section_post_count",
+"type": "text",
+"label": "Posts count"
+}
+
+],
+"presets": [
+{
+"name":"Sotbify Instagram",
+"category":"Sotbify"
+}
+]
+}
+
+{% endschema %}
+
